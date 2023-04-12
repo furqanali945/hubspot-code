@@ -1,6 +1,6 @@
 # HubSpot Custom Modules
 
-This repository contains custom modules developed for HubSpot CMS by [Your Company Name].
+This repository contains custom modules developed for HubSpot CMS.
 
 ## Table of Contents
 
