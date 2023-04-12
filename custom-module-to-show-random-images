@@ -1,0 +1,30 @@
+{% set logo_images = module.logo_image %}
+    {% set total_logos = logo_images|length %}
+    {% set num_to_select = module.number_of_logos_to_be_shown %}
+    {% set selected_indices = [] %}
+
+    {% if total_logos < num_to_select %}
+      {% set num_to_select = total_logos %}
+    {% endif %}
+
+    {% set range_indices = range(total_logos)|list %}
+
+    {% for i in range(num_to_select) %}
+      {% set remaining_indices = range_indices|difference(selected_indices)|list %}
+      {% set random_index = remaining_indices|random %}
+      {% do selected_indices.append(random_index) %}
+    {% endfor %}   
+
+    {% for index in selected_indices %}
+      {% set logo = logo_images[index] %}
+      {% if logo.src %}
+        {% set sizeAttrs = 'width="{{ logo.width }}" height="{{ logo.height }}"' %}
+        {% if logo.size_type == 'auto' %}
+          {% set sizeAttrs = 'width="{{ logo.width }}" height="{{ logo.height }}" style="max-width: 100%; height: auto;"' %}
+        {% elif logo.size_type == 'auto_custom_max' %}
+          {% set sizeAttrs = 'width="{{ logo.max_width }}" height="{{ logo.max_height }}" style="max-width: 100%; height: auto;"' %}
+        {% endif %}
+        {% set loadingAttr = logo.loading != 'disabled' ? 'loading="{{ logo.loading }}"' : '' %}
+        <img src="{{ logo.src }}" alt="{{ logo.alt }}" {{ loadingAttr }} {{ sizeAttrs }}>
+      {% endif %}
+    {% endfor %}
